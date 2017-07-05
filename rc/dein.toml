@@ -1,0 +1,161 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+# [[plugins]]
+# repo = 'godlygeek/csapprox'
+# if = "v:progname !=# 'gvim' && has('gui') && !has('nvim')"
+# hook_add = '''
+# " Convert colorscheme in Konsole.
+#  let g:CSApprox_konsole = 1
+#  let g:CSApprox_attr_map = { 'bold' : 'bold', 'italic' : '', 'sp' : '' }
+# '''
+
+# [[plugins]]
+# repo = 'taketwo/vim-ros'
+
+[[plugins]]
+repo = 'LeafCage/foldCC'
+
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+
+# [[plugins]]
+# repo = 'vim-latex/vim-latex'
+
+# [[plugins]]
+# repo = 'scrooloose/syntastic'
+
+# [[plugins]]
+# repo = 'embear/vim-localvimrc'
+
+# # ブランチやタグを指定したいとき
+# [[plugins]]
+# repo = 'delphinus35/typescript-vim'
+# rev  = 'colorize-template-strings'
+#
+# # 特定の条件で読み込みたいとき
+# [[plugins]]
+# repo = 'elzr/vim-json'
+# if   = '''! has('kaoriya')'''
+#
+# # 依存関係を指定したいとき
+# [[plugins]]
+# repo    = 'vim-airline/vim-airline'
+# depends = ['vim-airline-themes']
+#
+# # 依存関係を指定したからと言って、自動でインストールはされない（ここは NeoBundle と違う）
+# [[plugins]]
+# repo = 'vim-airline/vim-airline-themes'
+
+
+# [[plugins]]
+# repo = 'thinca/vim-guicolorscheme'
+# if = "v:progname !=# 'gvim' && !has('gui') && !has('nvim')"
+
+# [[plugins]]
+# repo = 'hail2u/vim-css3-syntax'
+#
+# [[plugins]]
+# repo = 'kana/vim-filetype-haskell'
+#
+# [[plugins]]
+# repo = 'mxw/vim-jsx'
+#
+# [[plugins]]
+# repo = 'itchyny/vim-haskell-indent'
+#
+# [[plugins]]
+# repo = 'udalov/kotlin-vim'
+#
+# [[plugins]]
+# repo = 'shawncplus/phpcomplete.vim'
+#
+# [[plugins]]
+# repo = 'jiangmiao/simple-javascript-indenter'
+#
+# [[plugins]]
+# repo = 'thinca/vim-ft-diff_fold'
+#
+# [[plugins]]
+# repo = 'thinca/vim-ft-help_fold'
+#
+# [[plugins]]
+# repo = 'vim-jp/cpp-vim'
+#
+# [[plugins]]
+# repo = 'cespare/vim-toml'
+#
+# [[plugins]]
+# repo = 'elzr/vim-json'
+#
+# [[plugins]]
+# repo = 'vim-jp/autofmt'
+#
+# [[plugins]]
+# repo = 'kana/vim-textobj-user'
+#
+# [[plugins]]
+# repo = 'hynek/vim-python-pep8-indent'
+#
+# # Operators
+# [[plugins]]
+# repo = 'kana/vim-operator-user'
+#
+# [[plugins]]
+# repo = 'rcmdnk/vim-markdown'
+#
+# # [[plugins]]
+# # repo = 'marijnh/tern_for_vim'
+# # build = 'npm install'
+#
+# # [[plugins]]
+# # repo = 'vim-ruby/vim-ruby'
+#
+# [[plugins]]
+# repo = 'Shougo/neosnippet-snippets'
+#
+# [[plugins]]
+# repo = 'osyo-manga/unite-vimpatches'
+#
+# [[plugins]]
+# repo = 'mattn/webapi-vim'
+#
+# [[plugins]]
+# repo = 'jelera/vim-javascript-syntax'
+#
+# [[plugins]]
+# repo = 'JesseKPhillips/d.vim'
+#
+# [[plugins]]
+# repo = 'nsf/gocode'
+# rtp = 'vim'
+#
+# [[plugins]]
+# repo = 'vim-jp/vimdoc-ja'
+#
+# [[plugins]]
+# repo = 'Kocha/vim-unite-tig'
+#
+# [[plugins]]
+# repo = 'kballard/vim-fish'
+#
+# [[plugins]]
+# repo = 'Shougo/neossh.vim'
+#
+# [[plugins]]
+# repo = 'thinca/vim-themis'
+#
+# [[plugins]]
+# repo = 'tsukkee/unite-tag'
+#
+# [[plugins]]
+# repo = 'Shougo/unite-outline'
+#
+# [[plugins]]
+# repo = 'ujihisa/neco-look'
+#
+# [[plugins]]
+# repo = 'Shougo/neco-syntax'
+#
+# [[plugins]]
+# repo = 'nixprime/cpsm'

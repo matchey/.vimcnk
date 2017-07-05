@@ -1,0 +1,17 @@
+!_TAG_FILE_ENCODING	utf-8	//
+FoldCCnavi()	foldCC.jax	/*FoldCCnavi()*
+FoldCCtext()	foldCC.jax	/*FoldCCtext()*
+foldCC	foldCC.jax	/*foldCC*
+foldCC-contents	foldCC.jax	/*foldCC-contents*
+foldCC-functions	foldCC.jax	/*foldCC-functions*
+foldCC-interface	foldCC.jax	/*foldCC-interface*
+foldCC-introduction	foldCC.jax	/*foldCC-introduction*
+foldCC-other	foldCC.jax	/*foldCC-other*
+foldCC-usage	foldCC.jax	/*foldCC-usage*
+foldCC-variables	foldCC.jax	/*foldCC-variables*
+foldCC.txt	foldCC.jax	/*foldCC.txt*
+g:foldCCnavi_maxchars	foldCC.jax	/*g:foldCCnavi_maxchars*
+g:foldCCtext_enable_autofdc_adjuster	foldCC.jax	/*g:foldCCtext_enable_autofdc_adjuster*
+g:foldCCtext_head	foldCC.jax	/*g:foldCCtext_head*
+g:foldCCtext_maxchars	foldCC.jax	/*g:foldCCtext_maxchars*
+g:foldCCtext_tail	foldCC.jax	/*g:foldCCtext_tail*

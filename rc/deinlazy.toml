@@ -1,0 +1,77 @@
+
+# [[plugins]]
+# repo = 'Shougo/neoyank.vim'
+# on_if = 1
+# on_event = 'TextYankPost'
+# on_source = ['unite.vim', 'denite.nvim']
+# 
+# [[plugins]]
+# repo = 'Shougo/echodoc.vim'
+# on_event = 'CompleteDone'
+# hook_source = 'call echodoc#enable()'
+# 
+# [[plugins]]
+# repo = 'Shougo/neocomplete.vim'
+# depends = 'context_filetype.vim'
+# if = "has('lua')"
+# on_event = 'InsertEnter'
+# hook_source = '''
+#   let g:neocomplete#enable_at_startup = 1
+#   source ~/.vim/rc/plugins/neocomplete.rc.vim
+# '''
+# 
+# [[plugins]]
+# repo = 'Shougo/neosnippet.vim'
+# depends = ['neosnippet-snippets', 'context_filetype.vim']
+# on_event = 'InsertCharPre'
+# on_ft = 'snippet'
+# hook_source = '''
+#   imap <silent>L     <Plug>(neosnippet_jump_or_expand)
+#   smap <silent>L     <Plug>(neosnippet_jump_or_expand)
+#   xmap <silent>L     <Plug>(neosnippet_expand_target)
+# 
+#   let g:neosnippet#enable_snipmate_compatibility = 1
+#   let g:neosnippet#enable_completed_snippet = 1
+#   let g:neosnippet#expand_word_boundary = 1
+# 
+#   " let g:snippets_dir = '~/.vim/snippets/,~/.vim/bundle/snipmate/snippets/'
+#   let g:neosnippet#snippets_directory = '~/.vim/snippets'
+# '''
+# 
+# [[plugins]]
+# repo = 'Shougo/unite.vim'
+# depends = 'neomru.vim'
+# on_source = 'denite.nvim'
+# hook_source = 'source ~/.vim/rc/plugins/unite.rc.vim'
+
+# # 特定のファイルタイプで読み込む
+# [[plugins]]
+# repo  = 'Quramy/tsuquyomi'
+# on_ft = ['typescript']
+#
+# # インサートモードに入ったら読み込む
+# [[plugins]]
+# repo = 'Shougo/neocomplete.vim'
+# on_i = 1
+#
+# [[plugins]]
+# repo   = 'Shougo/unite.vim'
+#
+# # unite.vim を読み込んだら一緒に読み込む
+# [[plugins]]
+# repo      = 'Shougo/neomru.vim'
+# on_source = ['unite.vim']
+#
+# # 特定のコマンドを打ったら読み込む
+# [[plugins]]
+# repo      = 'thinca/vim-prettyprint'
+# on_cmd    = ['PP', 'PrettyPrint']
+#
+# # 特定のマッピングを使ったら読み込む
+# # 又、gvim でしか利用しない
+# [[plugins]]
+# repo   = 'thinca/vim-fontzoom'
+# on_cmd = ['Fontzoom']
+# on_map = ['<Plug>(fontzoom-']
+# gui    = 1
+

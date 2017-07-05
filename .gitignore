@@ -1,0 +1,6 @@
+.git
+.netrwhist
+.viminfo
+.vimundo
+cache_*
+state_*
