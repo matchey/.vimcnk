@@ -2,7 +2,7 @@
 .netrwhist
 .viminfo
 .vimundo/*
-.cache/*
+.cache/
 cache_*
 state_*
-repos/*
+repos/
