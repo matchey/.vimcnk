@@ -75,7 +75,7 @@ First of all, git clone the repository.
 Note: You must define the installation directory before to use dein.  It
 depends on your usage.
 For example, "~/.vim/bundles" or "~/.cache/dein" or "~/.local/share/dein".
-dein.vim has not define the default installation directory.
+dein.vim does not define the default installation directory.
 You must not set the installation directory under "~/.vim/plugin" or
 "~/.config/nvim/plugin".
 
@@ -135,9 +135,6 @@ dein#add({repo}[, {options}])
 		{repo} is the repository URI or local repository directory
 		path.  If {repo} starts with github user name (ex:
 		"Shougo/dein.vim"), dein will install github plugins.
-		If {repo} is plugin name only (ex: "taglist.vim"), dein will
-		install the plugin in vim.org repository (vim-scripts.org:
-		https://github.com/vim-scripts).
 		See |dein-options| for what to set in {options}.
 		Note: You must call it in |dein#begin()| block.
 
@@ -234,10 +231,12 @@ dein#rollback({date}[, {plugins}])
 		Note: It is the dangerous command.
 
 							*dein#check_install()*
-dein#check_install([{plugins}])
+dein#check_install({plugins})
 		Check the plugins installation.
-		If the plugins are not installed, it will return non zero.
-		{plugins} is the plugins name list to check.
+		If {plugins} are not installed, it will return non-zero.
+		If {plugins} are invalid, it will return -1.
+		{plugins} are the plugins name list or the plugin name to
+		check.
 		If you omit it, dein will check all plugins installation.
 		Note: You can disable the message by |:silent|.
 
@@ -273,7 +272,7 @@ dein#source([{plugins}])
 							*dein#get()*
 dein#get([{plugin-name}])
 		Get the plugin options dictionary for {plugin-name}.
-		If you omit {plugin-name}, dein will returns the plugins
+		If you omit {plugin-name}, dein will return the plugins
 		dictionary.  The key is the plugin name.  The value is the
 		plugin dictionary.
 
@@ -564,6 +563,10 @@ normalized_name	(String)
 		unite.vim         unite
 		vim-quickrun      quickrun
 <
+							*dein-options-path*
+path		(String)
+		Specify the plugin downloaded path.
+
 							*dein-options-rev*
 rev		(String)
 		Specify a revision number or branch/tag name.
@@ -746,7 +749,7 @@ on_event	(String) or (List)
 
 							*dein-options-on_if*
 on_if		(String)
-		If it is evaluated and it is non zero, dein will call
+		If it is evaluated and it is non-zero, dein will call
 		|dein#source()|.
 		The default evaluate timings are "BufRead", "BufNewFile",
 		"VimEnter" and "FileType".
@@ -763,7 +766,7 @@ type__depth		(Number)
 		If omitted, |g:dein#types#git#clone_depth| is used.
 		If it is than 0, dein clones the repository by shallow
 		clone. Shallow clone feature saves your repository clone time.
-		But it have problems in some repository.
+		But it has problems in some repository.
 
 		See below issues:
 		https://github.com/Shougo/neobundle.vim/issues/81
@@ -781,6 +784,7 @@ HOOKS							*dein-hooks*
 
 		Note: You can use |g:dein#plugin| in the hooks.
 		Note: The loading order is not guaranteed in non lazy plugins.
+		Note: The string is executed as Ex commands.
 
 						*dein-options-hook_add*
 hook_add	(String) or (Function)
@@ -986,28 +990,6 @@ Q: I want to disable plugins.
 
 A: Please use |dein-options-if|.
 
-Q: Defined autocmd does not work in source/post_source hooks. >
-
-	function! s:on_source() abort
-	  " Does not work!
-	  autocmd ColorScheme * echo 'hello'
-	  " Fire autocmd
-	  colorscheme evening
-	endfunction
-	execute 'autocmd MyAutoCmd User' 'dein#source#'.g:dein#name
-	      \ 'call s:on_source()'
-
-A: You must set nested in the autocmd.  |autocmd-nested| >
-
-	function! s:on_source() abort
-	  " Does work!
-	  autocmd ColorScheme * echo 'hello'
-	  " Fire autocmd
-	  colorscheme evening
-	endfunction
-	execute 'autocmd MyAutoCmd User' 'dein#source#'.g:dein#name
-	      \ 'nested call s:on_source()'
-
 Q: Cannot load colorscheme when reloading .vimrc.
 
 A: You must write |:colorscheme| lines after |dein#end()|.
@@ -1094,6 +1076,13 @@ A: Please check |:message| result.
 If you have found "Process timeout" error, you should increase
 |g:dein#install_process_timeout| value.
 
+Q: YouCompleteMe does not work.  I have built YouCompleteMe manually.
+
+A: dein.vim has merge feature.  It copys the plugins into the merge directory.
+So dein.vim does not know the manually built binary.  It does not be copied.
+You should disable the merge feature manually. >
+	call dein#add('Valloric/YouCompleteMe', {'merged': 0})
+
 Q: I have got "Invalid range error" when plugin updating.
 
 A: It is Vim/neovim |delete()| implementation bug.
@@ -1115,6 +1104,12 @@ Q: Why dein.vim merges the plugins directories automatically?
 
 A: To avoid long 'runtimepath'.  If 'runtimepath' is long, Vim/neovim loading
 performance will be bad.
+
+Q: I want to update from shell.
+
+A: >
+	$ vim -c "try | call dein#update() | finally | qall! | endtry" \
+	-N -u $VIMRC -U NONE -i NONE -V1 -e -s
 
 ==============================================================================
 COMPATIBILITY						*dein-compatibility*
