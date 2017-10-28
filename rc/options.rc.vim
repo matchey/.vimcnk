@@ -57,8 +57,11 @@ if (!has('nvim') || $DISPLAY != '') && has('clipboard')
      set clipboard& clipboard+=unnamed
   endif
 endif
-set clipboard=autoselect,unnamedplus "OS のクリップボードと vim のヤンクを共有する．
-
+if (has('mac'))
+	set clipboard=unnamed
+else
+	set clipboard=autoselect,unnamedplus "OS のクリップボードと vim のヤンクを共有する．
+endif
 " Enable backspace delete indent and newline.
 set backspace=indent,eol,start
 
