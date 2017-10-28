@@ -65,6 +65,8 @@ set backspace=indent,eol,start
 " Highlight <>.
 " set matchpairs+=<:>
 
+packadd! matchit
+
 " Display another buffer when current buffer isn't saved.
 " set hidden
 
