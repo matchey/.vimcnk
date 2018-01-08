@@ -245,7 +245,8 @@ set ttyfast
 " When a line is long, do not omit it in @.
 set display=lastline
 
-hi MatchParen term=standout ctermbg=Black ctermfg=Black guibg=yellow guifg=yellow
+hi MatchParen term=standout ctermbg=Black ctermfg=gray guibg=yellow guifg=yellow
+" hi MatchParen term=standout ctermbg=Black ctermfg=Black guibg=yellow guifg=yellow
 
 function! ZenkakuSpace() "{{{
     highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
