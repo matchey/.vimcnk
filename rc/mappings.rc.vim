@@ -67,7 +67,7 @@ cnoremap <C-a>          <Home>
 " <C-b>: previous char.
 cnoremap <C-b>          <Left>
 " <C-d>: delete char.
-cnoremap <C-d>          <Del>
+" cnoremap <C-d>          <Del>
 " <C-e>, E: move to end.
 cnoremap <C-e>          <End>
 " <C-f>: next char.
