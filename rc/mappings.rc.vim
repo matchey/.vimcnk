@@ -127,7 +127,8 @@ nnoremap <silent> cy   ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 nmap  <Space>   [Space]
 nnoremap  [Space]   <Nop>
 
-nnoremap [Space]m :make<Enter>
+nnoremap <Space>m :make<Enter>
+" nnoremap [Space]m :make<Enter>
 
 " not move only highligt
 nnoremap <silent> * :let @/="\\<"<CR>"zyiw:let @/.=@z<CR>:let @/.="\\>"<CR>:set hlsearch<CR>
