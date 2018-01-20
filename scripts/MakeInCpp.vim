@@ -22,4 +22,3 @@ if stridx(expand("%:p:r"), "cpp") != -1
 		endif
 endif
 
-
