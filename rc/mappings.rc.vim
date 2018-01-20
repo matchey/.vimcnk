@@ -23,6 +23,10 @@ vnoremap <silent> cy   c<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 " commentout and paste
 vmap gy ygvgcgv<ESC>p
 
+vnoremap <silent> x x:let@x=@"<CR>
+vnoremap <silent> d d:let@d=@"<CR>
+vnoremap <silent> s "dygs
+
 "}}}
 
 " Insert mode keymappings: "{{{
@@ -90,10 +94,10 @@ cnoremap vdiff vertical<Space>diffsplit<Space>
 "}}}
 
 " movement "{{{
-noremap j gj
+" noremap j gj
 noremap <Down> gj
 "nnoremap <Down> <C-w><Down><Down>
-noremap k gk
+" noremap k gk
 noremap <Up> gk
 "nnoremap <Up> <C-w><Up><Up>
 " noremap <S-h> ^
@@ -119,6 +123,11 @@ noremap 1p "1p
 " past continuously
 nnoremap <silent> ciy ciw<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 nnoremap <silent> cy   ce<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
+
+nnoremap <silent> ciw "cyiwciw
+nnoremap <silent> cw "cywcw
+nnoremap <silent> diw "dyiwdiw
+nnoremap <silent> dw "dywdw
 
 "}}}
 
