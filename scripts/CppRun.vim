@@ -13,7 +13,7 @@ function! CppRun()
   let @r=@%
   10new
   execute "normal i=======実行結果=======\<ESC>"
-  execute "normal :r!\./obj/\<C-r>r\<BS>\<BS>\<BS>\<BS>\<CR>"
+  execute "normal :r!\./out/\<C-r>r\<BS>\<BS>\<BS>\<BS>\<CR>"
   execute "normal gg\<C-w>w"
 endfunction
 

@@ -224,8 +224,8 @@ set novisualbell
 
 " Display candidate supplement.
 " set nowildmenu
-" set wildmode=list:longest,full
-set wildmode=longest:full,full "共通部分まで補完->候補
+set wildmode=longest,list " 共通部分まで補完->リスト表示
+" set wildmode=longest:full,full "共通部分まで補完->候補を順に補完
 " Increase history amount.
 set history=1000
 

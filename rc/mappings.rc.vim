@@ -25,7 +25,7 @@ vmap gy ygvgcgv<ESC>p
 
 vnoremap <silent> x x:let@x=@"<CR>
 vnoremap <silent> d d:let@d=@"<CR>
-vnoremap <silent> s "dygs
+vnoremap <silent> s "dygvs
 
 "}}}
 
@@ -143,7 +143,7 @@ nnoremap <Space>m :make<Enter>
 nnoremap <silent> * :let @/="\\<"<CR>"zyiw:let @/.=@z<CR>:let @/.="\\>"<CR>:set hlsearch<CR>
 
 " no highlit search
-nnoremap <C-h> :noh<CR>
+nnoremap <silent> <C-h> :noh<CR>
 
 " Substitute for the word under cursor follow this line 
 nnoremap [Space]s "syiw:,$s/<C-r>s//gc<Left><Left><Left>
@@ -176,6 +176,9 @@ nnoremap <Space><Space> i<Space><ESC><Right>
 
 " put a new line
 nnoremap [Space]<CR> o<ESC>
+
+"count number of characters
+" vnoremap co :s/./&/gn <== g<C-g>
 
 " Shougo's mappings"{{{
 
