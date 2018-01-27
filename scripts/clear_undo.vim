@@ -1,11 +1,11 @@
 "
 " @brief vim script to clear undo history
 "
-" @author Noriaki Machinaka
+" @author noriaki machinaka
 "
-" @copyright (c): 2017 Noriaki Machinaka
+" @copyright (c): 2017 noriaki machinaka
 "
-" @license : GPL Software License Agreement
+" @license : gpl software license agreement
 
 "
 

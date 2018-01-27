@@ -89,8 +89,10 @@ cnoremap <C-y>          <C-r>*
 " cnoremap <C-j> <Down>
 " cnoremap <C-k> <Up>
 " cnoremap <C-l> <Right>
-cnoremap W w !sudo tee % > /dev/null
-cnoremap vdiff vertical<Space>diffsplit<Space>
+" cnoremap W w !sudo tee % > /dev/null
+" cnoremap vdiff vertical<Space>diffsplit<Space>
+command! W w !sudo tee % > /dev/null
+command! Vdiff vertical<Space>diffsplit<Space>
 "}}}
 
 " movement "{{{
