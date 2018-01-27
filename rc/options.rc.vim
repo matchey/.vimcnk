@@ -131,6 +131,7 @@ if has('persistent_undo')
 	set undofile
 endif
 
+" set viminfo=n$HOME/.vimcnk/.viminfo
 set viminfo+=n$HOME/.vimcnk/.viminfo
 
 " Shougo's settings"{{{
@@ -406,6 +407,7 @@ augroup END " 前回の編集場所のカーソル位置から開く
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/RosMake.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/MakeInCpp.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/clear_undo.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vnewTab.vim'
 " source ~/.vim/script/RosTopicList.vim
 " source ~/.vim/script/RosCatkinMake.vim
 " source ~/.vim/script/CatkinMake_pkg.vim
