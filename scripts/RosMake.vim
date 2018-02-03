@@ -16,9 +16,10 @@ if stridx(expand("%:p"), "ros_catkin_ws") != -1
 		execute 'source' fnamemodify(expand('<sfile>'), ':h').'/CatkinMake_pkg.vim'
 		execute 'source' fnamemodify(expand('<sfile>'), ':h').'/CatkinMakePkg_fromCMakeList.vim'
 
-		let $V_ROS_ROOT='/opt/ros/kinetic/include'
-		set path+=$V_ROS_ROOT
-		"
+		let ROS_INCLUDE=glob('~/ros_catkin_ws/src/**/include', 0, 1)
+		for $dir in ROS_INCLUDE
+			set path+=$dir
+		endfor
 
 		autocmd BufNewFile,BufRead *.launch set filetype=xml
 
