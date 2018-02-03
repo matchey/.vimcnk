@@ -416,6 +416,7 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/RosMake.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/MakeInCpp.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/clear_undo.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vnewTab.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/histignore.vim'
 " source ~/.vim/script/RosTopicList.vim
 " source ~/.vim/script/RosCatkinMake.vim
 " source ~/.vim/script/CatkinMake_pkg.vim
