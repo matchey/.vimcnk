@@ -92,7 +92,7 @@ cnoremap <C-y>          <C-r>*
 " cnoremap W w !sudo tee % > /dev/null
 " cnoremap vdiff vertical<Space>diffsplit<Space>
 command! W w !sudo tee % > /dev/null
-command! Vdiff vertical<Space>diffsplit<Space>
+command! -complete=file Vdiff vertical<Space>diffsplit<Space>
 "}}}
 
 " movement "{{{
@@ -156,7 +156,9 @@ nnoremap [Space]a za
 nnoremap [Space]i zMzv
 
 " indent format all
-nnoremap == gg=G''
+" nnoremap == gg=G''
+" indent format line
+nnoremap == v=
 
 " Easy escape.
 " inoremap jj           <ESC>

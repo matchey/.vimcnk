@@ -1,7 +1,8 @@
 
 function! s:vnew_in_newtab(...)
 	if a:0 == 1
-		tabedit %:p
+		" tabedit %:p
+		exec 'tabnew ' . a:1
 		" exec 'rightbelow vnew ' . a:1
 		" exec 'vnew ' . a:1
 	else

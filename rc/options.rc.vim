@@ -73,6 +73,13 @@ packadd! matchit
 " Display another buffer when current buffer isn't saved.
 " set hidden
 
+" to easily change directory to the file being edited
+nnoremap cd :cd %:p:h<CR>:pwd<CR>
+
+" working directory is always the same as the file edited
+" set autochdir
+" autocmd BufEnter * silent! lcd %:p:h
+
 " Search home directory path on cd.
 " But can't complete.
 "  set cdpath+=~
@@ -227,6 +234,7 @@ set novisualbell
 " set nowildmenu
 set wildmode=longest,list " 共通部分まで補完->リスト表示
 " set wildmode=longest:full,full "共通部分まで補完->候補を順に補完
+set wildignorecase
 " Increase history amount.
 set history=1000
 
