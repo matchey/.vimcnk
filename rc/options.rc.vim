@@ -48,6 +48,9 @@ set autoindent smartindent
 set modeline
 set modelines=5 "モードラインの検索行数を設定
 
+" <C-a>, <C-x>
+" set nrformats+=alpha
+
 " Use clipboard register.
 
 if (!has('nvim') || $DISPLAY != '') && has('clipboard')
