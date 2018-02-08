@@ -35,6 +35,16 @@ set fileencodings=utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,
 
 " execute 'set runtimepath+=' . fnamemodify(expand('<sfile>'), ':h:h') . "/after"
 
+if has('cryptv')
+  if v:version > 704 || v:version == 704 && has('patch401')
+    set cryptmethod=blowfish2
+  elseif v:version >= 703
+    set cryptmethod=blowfish
+  else
+    set cryptmethod=zip
+  endif
+endif
+
 " Setting of terminal encoding.
 " if !has('gui_running') && IsWindows()
 "   " For system.
