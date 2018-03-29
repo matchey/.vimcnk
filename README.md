@@ -9,7 +9,7 @@
 
 2. Edit your .vimrc
 	```
-	~$ echo "source ~/.vimcnk/vimrc" >> .vimrc
+	~$ echo "source ~/.vimcnk/vimrc" >> ~/.vimrc
 	```
 3. Open vim and install dein
 
