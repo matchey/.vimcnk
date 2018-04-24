@@ -71,7 +71,9 @@ set backspace=indent,eol,start
 " Highlight <>.
 " set matchpairs+=<:>
 
-packadd! matchit
+if v:version >= 800
+	packadd! matchit
+endif
 
 " Display another buffer when current buffer isn't saved.
 " set hidden
