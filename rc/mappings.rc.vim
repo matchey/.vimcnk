@@ -161,8 +161,8 @@ nnoremap [Space]i zMzv
 nnoremap == v=
 
 " Easy escape.
-" inoremap jj           <ESC>
-inoremap jj <ESC><Right>
+inoremap jj <ESC>
+" inoremap jj <ESC><Right>
 " cnoremap <expr> j
 "       \ getcmdline()[getcmdpos()-2] ==# 'j' ? "\<BS>\<C-c>" : 'j'
 " inoremap j<Space>     j
