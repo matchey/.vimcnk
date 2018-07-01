@@ -3,7 +3,7 @@
 1. Run below script.
      ```
      ~$ cd ~/.vimcnk/rc/plugins
-     ~$ sh ./installer.sh .
+     ~$ sh ./installer.sh ./.cache/dein
      ```
 1. Make undo directory for perpetuation undo
      ```
