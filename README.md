@@ -16,7 +16,8 @@
      ```
 1. Edit your .vimrc
 	```
-	~$ echo "source ~/.vimcnk/vimrc" >> ~/.vimrc
+	<!-- ~$ echo "source ~/.vimcnk/vimrc" >> ~/.vimrc -->
+	~$ sed -i '1isource ~/.vimcnk/vimrc' ~/.vimrc
 	```
 1. Open vim and install dein
 
