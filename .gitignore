@@ -5,3 +5,4 @@
 cache_*
 state_*
 repos/
+!.gitkeep
