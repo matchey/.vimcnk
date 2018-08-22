@@ -132,6 +132,7 @@ let g:tex_flavor='latex'
 " set isfname-==
 
 " Keymapping timeout.
+" set timeoutlen=250
 set timeout timeoutlen=200 ttimeoutlen=100
 " set timeout timeoutlen=3000 ttimeoutlen=100
 
