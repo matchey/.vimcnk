@@ -101,6 +101,7 @@ noremap <Down> gj
 "nnoremap <Down> <C-w><Down><Down>
 " noremap k gk
 noremap <Up> gk
+let g:setRelativeNumMap = 'gh' " gh <- セレクトモードに入る(visual -> C-g)
 "nnoremap <Up> <C-w><Up><Up>
 " noremap <S-h> ^
 " noremap <S-l> $

@@ -135,6 +135,11 @@ let g:tex_flavor='latex'
 " set timeoutlen=250
 set timeout timeoutlen=200 ttimeoutlen=100
 " set timeout timeoutlen=3000 ttimeoutlen=100
+"  'timeout'  'ttimeout'        動作
+"     オフ      オフ            タイムアウト (時間切れ) を設けない
+"     オン      オンまたはオフ  マッピングとキーコードにタイムアウトあり
+"     オフ      オン            キーコードにタイムアウトあり
+" 'ttimeout' は、'compatible' がオンになるとオフになる
 
 set viminfo='20,\"1000 "ヤンクの保存行数
 
@@ -423,6 +428,7 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/MakeInCpp.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/clear_undo.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vnewTab.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/histignore.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/SetRelativeNumber.vim'
 " source ~/.vim/script/RosTopicList.vim
 " source ~/.vim/script/RosCatkinMake.vim
 " source ~/.vim/script/CatkinMake_pkg.vim
