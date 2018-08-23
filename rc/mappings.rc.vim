@@ -97,14 +97,15 @@ command! -complete=file Vdiff vertical<Space>diffsplit<Space>
 
 " movement "{{{
 " noremap j gj
-noremap <Down> gj
+" noremap <Down> gj
 "nnoremap <Down> <C-w><Down><Down>
 " noremap k gk
-noremap <Up> gk
-" nmap j <Plug>SetRelativeNumber_j
-" nmap k <Plug>SetRelativeNumber_k
-" vmap j <Plug>VSetRelativeNumber_j
-" vmap k <Plug>VSetRelativeNumber_k
+" noremap <Up> gk
+noremap <silent> gh :SetRelativeNumber<CR>
+" nnoremap j :SetRelativeNumber j<CR>
+" nnoremap k :SetRelativeNumber k<CR>
+" vnoremap j :VSetRelativeNumber j<CR>
+" vnoremap k :VSetRelativeNumber k<CR>
 "nnoremap <Up> <C-w><Up><Up>
 " noremap <S-h> ^
 " noremap <S-l> $
