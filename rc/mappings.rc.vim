@@ -101,7 +101,10 @@ noremap <Down> gj
 "nnoremap <Down> <C-w><Down><Down>
 " noremap k gk
 noremap <Up> gk
-let g:setRelativeNumMap = 'gh' " gh <- セレクトモードに入る(visual -> C-g)
+" nmap j <Plug>SetRelativeNumber_j
+" nmap k <Plug>SetRelativeNumber_k
+" vmap j <Plug>VSetRelativeNumber_j
+" vmap k <Plug>VSetRelativeNumber_k
 "nnoremap <Up> <C-w><Up><Up>
 " noremap <S-h> ^
 " noremap <S-l> $
