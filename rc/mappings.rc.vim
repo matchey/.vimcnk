@@ -101,7 +101,8 @@ command! -complete=file Vdiff vertical<Space>diffsplit<Space>
 "nnoremap <Down> <C-w><Down><Down>
 " noremap k gk
 " noremap <Up> gk
-noremap <silent> gh :SetRelativeNumber<CR>
+" noremap <silent> gh :SetRelativeNumber<CR>
+noremap <silent> gh :set relativenumber!<CR>
 " nnoremap j :SetRelativeNumber j<CR>
 " nnoremap k :SetRelativeNumber k<CR>
 " vnoremap j :VSetRelativeNumber j<CR>
