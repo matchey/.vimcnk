@@ -5,6 +5,7 @@
 
 if [ $# -ne 1 ]; then
   echo "You must specify the installation directory!"
+  echo "e.g. \"sh ./installer.sh .\""
   exit 1
 fi
 
