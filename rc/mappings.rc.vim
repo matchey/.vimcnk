@@ -57,9 +57,11 @@ inoremap <Up> <ESC>gka
 " inoremap <C-l> <Right>
 
 " as delete (fn + BackSpace)
-inoremap <C-l> <ESC><Right>s
+inoremap <C-d> <Delete>
+" インデントを１つ減らす<C-d>
+" inoremap <C-l> <ESC><Right>s
 
-inoremap <A-j> lll
+" inoremap <A-j> lll
 " inoremap @p <Right><ESC>"0pi 
 
 
