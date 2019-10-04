@@ -27,7 +27,7 @@ set wrapscan
 " Smart insert tab setting.
 set smarttab
 " Exchange tab to spaces.
-" set expandtab
+set expandtab
 " Substitute <Tab> with blanks.
 set tabstop=4
 " Spaces instead <Tab>.
@@ -429,6 +429,7 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/clear_undo.vim
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vnewTab.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/histignore.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/SetRelativeNumber.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/DiffOrig.vim'
 " source ~/.vim/script/RosTopicList.vim
 " source ~/.vim/script/RosCatkinMake.vim
 " source ~/.vim/script/CatkinMake_pkg.vim
