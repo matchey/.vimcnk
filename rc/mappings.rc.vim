@@ -6,6 +6,12 @@
 " nmap <C-Space>  <C-@>
 " cmap <C-Space>  <C-@>
 
+" Terminal mode keymappings: "{{{
+" tnoremap <Esc> <C-\><C-n>
+" tnoremap jj <C-\><C-n>
+" tnoremap gt <C-\><C-n>gt
+" }}}
+
 " Visual mode keymappings: "{{{
 " Indent
 " nnoremap > >>
@@ -63,7 +69,7 @@ inoremap <C-d> <Delete>
 
 " inoremap <A-j> lll
 " inoremap @p <Right><ESC>"0pi 
-
+" inoremap <C-j> <ESC>:s/^ *//<CR>kgJ:noh<CR>i
 
 "}}}
 
