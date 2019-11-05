@@ -29,11 +29,11 @@ set smarttab
 " Exchange tab to spaces.
 set expandtab
 " Substitute <Tab> with blanks.
-set tabstop=4
+set tabstop=2
 " Spaces instead <Tab>.
 " set softtabstop=4
 " Autoindent width.
-set shiftwidth=4
+set shiftwidth=2
 " Round indent by shiftwidth.
 " set shiftround
 
@@ -151,6 +151,8 @@ endif
 
 " set viminfo=n$HOME/.vimcnk/.viminfo
 set viminfo+=n$HOME/.vimcnk/.viminfo
+
+" let s:session_path = expand('viminfo+=n$HOME/.vimcnk/')
 
 " Shougo's settings"{{{
 
@@ -420,6 +422,17 @@ augroup END " 前回の編集場所のカーソル位置から開く
 "}}}
 
 "---------------------------------------------------------------------------
+" Terminal:"{{{
+
+" let s:session_path = expand('~/.vimcnk/.sessions')
+"
+" if !isdirectory(s:session_path)
+"   call mkdir(s:session_path, "p")
+" endif
+
+" }}}
+
+"---------------------------------------------------------------------------
 " MyVimScripts"{{{
 " execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/CatkinMake_pkg.vim'
 " execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/CatkinMakePkg_fromCMakeList.vim'
@@ -430,6 +443,7 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vnewTab.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/histignore.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/SetRelativeNumber.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/DiffOrig.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/SessionFunc.vim'
 " source ~/.vim/script/RosTopicList.vim
 " source ~/.vim/script/RosCatkinMake.vim
 " source ~/.vim/script/CatkinMake_pkg.vim

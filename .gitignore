@@ -1,6 +1,7 @@
 .netrwhist
 .viminfo
 .vimundo/*
+.sessions/*
 .cache/
 cache_*
 state_*
