@@ -103,6 +103,9 @@ command! W w !sudo tee % > /dev/null
 command! -complete=file Vdiff vertical<Space>diffsplit<Space>
 "}}}
 
+" Terminal mode keymappings"{{{
+" }}}
+
 " movement "{{{
 " noremap j gj
 " noremap <Down> gj
