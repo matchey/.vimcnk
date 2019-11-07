@@ -444,6 +444,7 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/histignore.vim
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/SetRelativeNumber.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/DiffOrig.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/SessionFunc.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vert_netrw.vim'
 " source ~/.vim/script/RosTopicList.vim
 " source ~/.vim/script/RosCatkinMake.vim
 " source ~/.vim/script/CatkinMake_pkg.vim
