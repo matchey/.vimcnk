@@ -104,6 +104,8 @@ command! -complete=file Vdiff vertical<Space>diffsplit<Space>
 "}}}
 
 " Terminal mode keymappings"{{{
+" tnoremap <silent> <C-h> :noh<CR>
+tnoremap jj <C-w><S-n>
 " }}}
 
 " movement "{{{
