@@ -6,12 +6,6 @@
 " nmap <C-Space>  <C-@>
 " cmap <C-Space>  <C-@>
 
-" Terminal mode keymappings: "{{{
-" tnoremap <Esc> <C-\><C-n>
-" tnoremap jj <C-\><C-n>
-" tnoremap gt <C-\><C-n>gt
-" }}}
-
 " Visual mode keymappings: "{{{
 " Indent
 " nnoremap > >>
@@ -104,8 +98,16 @@ command! -complete=file Vdiff vertical<Space>diffsplit<Space>
 "}}}
 
 " Terminal mode keymappings"{{{
+" tnoremap <Esc> <C-\><C-n>
+" tnoremap jj <C-\><C-n>
+" tnoremap gt <C-\><C-n>gt
 " tnoremap <silent> <C-h> :noh<CR>
-tnoremap jj <C-w><S-n>
+" tnoremap jj <C-w><S-n>
+tnoremap <C-w><C-u> <C-w><S-n><C-u>
+" }}}
+
+" Netrw keymappings"{{{
+" autocmd filetype netrw nmap <buffer> x :call NetrwCollapse()<CR>
 " }}}
 
 " movement "{{{
@@ -181,6 +183,7 @@ nnoremap == v=
 
 " Easy escape.
 inoremap jj <ESC>
+inoremap <C-j> <ESC>
 " inoremap jj <ESC><Right>
 " cnoremap <expr> j
 "       \ getcmdline()[getcmdpos()-2] ==# 'j' ? "\<BS>\<C-c>" : 'j'
