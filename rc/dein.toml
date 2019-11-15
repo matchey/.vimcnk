@@ -20,6 +20,9 @@ repo = 'LeafCage/foldCC'
 repo = 'tomtom/tcomment_vim'
 
 # [[plugins]]
+# repo = 'kyoh86/vim-editerm'
+
+# [[plugins]]
 # repo = 'vim-latex/vim-latex'
 
 # [[plugins]]
