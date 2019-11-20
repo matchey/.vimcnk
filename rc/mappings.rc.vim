@@ -59,6 +59,10 @@ inoremap <Up> <ESC>gka
 " as delete (fn + BackSpace)
 inoremap <C-d> <Delete>
 " インデントを１つ減らす<C-d>
+inoremap <C-e> <End>
+inoremap <C-u> <C-\><C-o>"yd^
+inoremap <C-w> <C-\><C-o>"ydb
+inoremap <C-y> <C-r>y
 " inoremap <C-l> <ESC><Right>s
 
 " inoremap <A-j> lll
