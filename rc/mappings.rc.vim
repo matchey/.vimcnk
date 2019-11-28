@@ -27,6 +27,10 @@ vnoremap <silent> x x:let@x=@"<CR>
 vnoremap <silent> d d:let@d=@"<CR>
 vnoremap <silent> s "dygvs
 
+" move lines
+" vnoremap <C-Up> "zx<Up>"zP`[V`]
+" vnoremap <C-Down> "zx"zp`[V`]
+
 "}}}
 
 " Insert mode keymappings: "{{{
@@ -187,7 +191,7 @@ nnoremap == v=
 
 " Easy escape.
 inoremap jj <ESC>
-inoremap <C-j> <ESC>
+" inoremap <C-j> <ESC>
 " inoremap jj <ESC><Right>
 " cnoremap <expr> j
 "       \ getcmdline()[getcmdpos()-2] ==# 'j' ? "\<BS>\<C-c>" : 'j'

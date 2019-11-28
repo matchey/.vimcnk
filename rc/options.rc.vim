@@ -284,7 +284,7 @@ endif "全角スペースを可視化する "}}}
 
 augroup vimrcEx "{{{
   au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
-  \ exe "normal g`\"" | endif
+  \ exe "windo normal G" | exe "windo normal g`\"" | endif
 augroup END " 前回の編集場所のカーソル位置から開く 
 "}}}
 
@@ -447,6 +447,8 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/SessionFunc.vi
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vert_netrw.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vert_motion_ft.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vim_in_term.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/LineMove.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/saveLastSession.vim'
 " source ~/.vim/script/RosTopicList.vim
 " source ~/.vim/script/RosCatkinMake.vim
 " source ~/.vim/script/CatkinMake_pkg.vim
