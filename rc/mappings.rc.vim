@@ -103,6 +103,7 @@ cnoremap <C-y>          <C-r>*
 " cnoremap vdiff vertical<Space>diffsplit<Space>
 command! W w !sudo tee % > /dev/null
 command! -complete=file Vdiff vertical<Space>diffsplit<Space>
+au FileType plantuml command! OpenUml :!google-chrome %
 "}}}
 
 " Terminal mode keymappings"{{{
