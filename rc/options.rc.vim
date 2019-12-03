@@ -123,6 +123,9 @@ let g:localvimrc_sandbox=0 " 変更可能にする
 
 let g:tex_flavor='latex'
 
+let g:vim_markdown_folding_disabled=1
+" let g:previm_enable_realtime=1
+
 " Use vimgrep.
 " set grepprg=internal
 " Use grep.
