@@ -103,7 +103,7 @@ cnoremap <C-y>          <C-r>*
 " cnoremap vdiff vertical<Space>diffsplit<Space>
 command! W w !sudo tee % > /dev/null
 command! -complete=file Vdiff vertical<Space>diffsplit<Space>
-au FileType plantuml command! OpenUml :!google-chrome %
+" au FileType plantuml command! OpenUml :!google-chrome %
 "}}}
 
 " Terminal mode keymappings"{{{
@@ -170,6 +170,7 @@ nnoremap  [Space]   <Nop>
 
 nnoremap <Space>m :make<Enter>
 " nnoremap [Space]m :make<Enter>
+nnoremap <Space>p :make\|!xdg-open %:r.png<Enter><Enter>
 
 " not move only highligt
 nnoremap <silent> * :let @/="\\<"<CR>"zyiw:let @/.=@z<CR>:let @/.="\\>"<CR>:set hlsearch<CR>

@@ -23,6 +23,18 @@ repo = 'tomtom/tcomment_vim'
 repo = 'aklt/plantuml-syntax'
 
 # [[plugins]]
+# repo = 'plasticboy/vim-markdown'
+
+[[plugins]]
+repo = 'iamcco/markdown-preview.vim'
+#
+# [[plugins]]
+# repo = 'kannokanno/previm'
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+
+# [[plugins]]
 # repo = 'kyoh86/vim-editerm'
 
 # [[plugins]]
