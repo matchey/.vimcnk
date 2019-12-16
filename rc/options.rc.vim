@@ -273,6 +273,33 @@ set display=lastline
 hi MatchParen term=standout ctermbg=Black ctermfg=gray guibg=yellow guifg=yellow
 " hi MatchParen term=standout ctermbg=Black ctermfg=Black guibg=yellow guifg=yellow
 
+" autocmd FocusLost * :normal gg
+
+set laststatus=2
+
+hi StatusLineTermNC ctermbg=238 ctermfg=253
+
+hi StatusLine ctermbg=255 ctermfg=23
+hi StatusLineNC ctermbg=248 ctermfg=238
+
+augroup ccsl
+  autocmd! ccsl
+  " autocmd WinLeave * hi StatusLineTerm   ctermbg=238 ctermbg=253 guifg=#455354 guibg=fg
+  " autocmd WinEnter,BufRead * hi StatusLineTerm   ctermbg=238 ctermbg=253 guifg=#455354 guibg=fg
+  " autocmd WinLeave * highlight StatusLineTerm guifg=DarkSlateGray guibg=OliveDrab 
+  " autocmd WinEnter,BufRead * hi StatusLineTerm   ctermbg=238 ctermbg=253 guifg=#455354 guibg=fg
+  " autocmd WinEnter,BufRead * highlight StatusLineTerm guifg=black guibg=white 
+  " autocmd WinLeave * hi StatusLineTermNC ctermbg=244 ctermbg=232 guifg=#808080 guibg=#080808
+  " autocmd WinEnter,BufRead * hi StatusLineTermNC ctermbg=244 ctermbg=232 guifg=#808080 guibg=#080808
+  " autocmd WinEnter,BufRead * highlight StatusLine guifg=black guibg=white 
+  " autocmd WinLeave * highlight StatusLine guifg=DarkSlateGray guibg=OliveDrab 
+  " autocmd WinEnter,BufRead * highlight StatusLine guifg=black guibg=white 
+  " autocmd FocusLost * set nocursorline
+  " autocmd FocusGained * set cursorline
+  " autocmd WinLeave,FocusLost * set nocursorline
+  " autocmd WinEnter,BufRead * set cursorline
+augroup END
+
 function! ZenkakuSpace() "{{{
     highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
 endfunction
