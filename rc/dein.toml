@@ -34,6 +34,9 @@ repo = 'iamcco/markdown-preview.vim'
 [[plugins]]
 repo = 'tyru/open-browser.vim'
 
+[[plugins]]
+repo = 'osyo-manga/vim-anzu'
+
 # [[plugins]]
 # repo = 'kyoh86/vim-editerm'
 
