@@ -175,6 +175,12 @@ nnoremap <Space>p :make\|!xdg-open %:r.png<Enter><Enter>
 " not move only highligt
 nnoremap <silent> * :let @/="\\<"<CR>"zyiw:let @/.=@z<CR>:let @/.="\\>"<CR>:set hlsearch<CR>
 
+nmap n <Plug>(anzu-n-with-echo)
+nmap N <Plug>(anzu-N-with-echo)
+" nmap * <Plug>(anzu-star-with-echo)
+" nmap # <Plug>(anzu-sharp-with-echo)
+" set statusline=%{anzu#search_status()}
+
 " no highlit search
 nnoremap <silent> <C-h> :noh<CR>
 
