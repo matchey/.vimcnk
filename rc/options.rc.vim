@@ -277,9 +277,10 @@ hi MatchParen term=standout ctermbg=Black ctermfg=gray guibg=yellow guifg=yellow
 
 set laststatus=2
 
-hi StatusLine ctermbg=255 ctermfg=23
+hi StatusLine ctermbg=253 ctermfg=23
 hi StatusLineNC ctermbg=248 ctermfg=238
 
+hi StatusLineTerm ctermbg=29 ctermfg=231
 hi StatusLineTermNC ctermbg=238 ctermfg=253
 
 augroup ccsl
