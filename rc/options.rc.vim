@@ -461,6 +461,8 @@ augroup END " 前回の編集場所のカーソル位置から開く
 "   call mkdir(s:session_path, "p")
 " endif
 
+command! Terminal call popup_create(term_start([&shell], #{ hidden: 1, term_finish: 'close'}), #{ border: [], minwidth: winwidth(0)/2, minheight: &lines/2 })
+
 " }}}
 
 "---------------------------------------------------------------------------
