@@ -280,8 +280,10 @@ set laststatus=2
 hi StatusLine ctermbg=253 ctermfg=23
 hi StatusLineNC ctermbg=248 ctermfg=238
 
-hi StatusLineTerm ctermbg=29 ctermfg=231
-hi StatusLineTermNC ctermbg=238 ctermfg=253
+if has('terminal')
+  hi StatusLineTerm ctermbg=29 ctermfg=231
+  hi StatusLineTermNC ctermbg=238 ctermfg=253
+endif
 
 augroup ccsl
   autocmd! ccsl
@@ -461,7 +463,9 @@ augroup END " 前回の編集場所のカーソル位置から開く
 "   call mkdir(s:session_path, "p")
 " endif
 
-command! Terminal call popup_create(term_start([&shell], #{ hidden: 1, term_finish: 'close'}), #{ border: [], minwidth: winwidth(0)/2, minheight: &lines/2 })
+if has('terminal')
+  command! Terminal call popup_create(term_start([&shell], #{ hidden: 1, term_finish: 'close'}), #{ border: [], minwidth: winwidth(0)*2/3, minheight: &lines*2/3 })
+endif
 
 " }}}
 
@@ -479,7 +483,9 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/DiffOrig.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/SessionFunc.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vert_netrw.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vert_motion_ft.vim'
-execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vim_in_term.vim'
+if has('terminal')
+  execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vim_in_term.vim'
+endif
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/LineMove.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/saveLastSession.vim'
 " source ~/.vim/script/RosTopicList.vim
