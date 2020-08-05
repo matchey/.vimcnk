@@ -113,8 +113,10 @@ if has('terminal')
   " tnoremap gt <C-\><C-n>gt
   " tnoremap <silent> <C-h> :noh<CR>
   " tnoremap jj <C-w><S-n>
+  " tnoremap <C-w><C-u> <C-w><S-n><C-u><C-w>7>
   tnoremap <C-w><C-u> <C-w><S-n><C-u>
   tnoremap <C-w>/ <C-w><S-n>/
+  " tnoremap i <C-w>=i
 endif
 " }}}
 
