@@ -7,3 +7,5 @@ cache_*
 state_*
 repos/
 !.gitkeep
+.copilot_logs/
+.netrwbook
