@@ -48,6 +48,8 @@ set autoindent smartindent
 set modeline
 set modelines=5 "モードラインの検索行数を設定
 
+set tabpagemax=60
+
 " <C-a>, <C-x>
 " set nrformats+=alpha
 
@@ -73,6 +75,10 @@ set backspace=indent,eol,start
 
 if v:version >= 800
 	packadd! matchit
+endif
+
+if v:version >= 810
+  packadd termdebug 
 endif
 
 " Display another buffer when current buffer isn't saved.
@@ -125,6 +131,9 @@ let g:tex_flavor='latex'
 
 let g:vim_markdown_folding_disabled=1
 " let g:previm_enable_realtime=1
+" let g:preview_markdown_parser='glow'
+let g:mkdp_echo_preview_url = 1
+let g:mkdp_open_ip = '43.4.2.229'
 
 " Use vimgrep.
 " set grepprg=internal
@@ -156,6 +165,22 @@ endif
 set viminfo+=n$HOME/.vimcnk/.viminfo
 
 " let s:session_path = expand('viminfo+=n$HOME/.vimcnk/')
+
+let g:ollama_chat_model = "deepseek-r1:14b"
+" let g:ollama_model = "deepseek-r1:14b"
+" let g:ollama_model = "deepseek-coder-v2:16b-lite-base-q4_0"
+let g:ollama_model = "codegemma:2b"
+" let g:ollama_model = "codellama:13b-code"
+let g:ollama_enabled = 0
+
+" let g:copilot_debug = 1
+let g:copilot_filetypes = {
+      \ 'gitcommit': v:true,
+      \ }
+" let g:copilot_settings = #{selectedCompletionModel: 'gpt-5.2'}
+" let g:copilot_settings = #{selectedCompletionModel: 'gemini-2.5-pro'}
+let g:copilot_settings = #{selectedCompletionModel: 'claude-opus-4.5'}
+
 
 " Shougo's settings"{{{
 
@@ -230,10 +255,19 @@ set title
 execute 'set runtimepath^=' . fnamemodify(expand('<sfile>'), ':h:h')
 execute 'set runtimepath+=' . fnamemodify(expand('<sfile>'), ':h:h') . "/after"
 colorscheme molokai
+" colorscheme iceberg
+" set background=dark
 syntax on "コードの色分け
 set t_Co=256 "カラースキーム反映させるのに必要
-highlight Normal ctermbg=none 
+highlight Normal ctermbg=none
 set scrolloff=1 " カーソル位置をウィンドウ端からn行残してスクロール
+
+set listchars=tab:>-
+set list
+" hi SpecialKey ctermbg=None ctermfg=59 guibg=NONE guifg=NONE
+
+" set diffopt=algorithm:patience,indent-heuristic
+set diffopt=internal,filler,algorithm:histogram,indent-heuristic
 
 " Don't create backup.
 set nowritebackup
@@ -289,14 +323,14 @@ augroup ccsl
   autocmd! ccsl
   " autocmd WinLeave * hi StatusLineTerm   ctermbg=238 ctermbg=253 guifg=#455354 guibg=fg
   " autocmd WinEnter,BufRead * hi StatusLineTerm   ctermbg=238 ctermbg=253 guifg=#455354 guibg=fg
-  " autocmd WinLeave * highlight StatusLineTerm guifg=DarkSlateGray guibg=OliveDrab 
+  " autocmd WinLeave * highlight StatusLineTerm guifg=DarkSlateGray guibg=OliveDrab
   " autocmd WinEnter,BufRead * hi StatusLineTerm   ctermbg=238 ctermbg=253 guifg=#455354 guibg=fg
-  " autocmd WinEnter,BufRead * highlight StatusLineTerm guifg=black guibg=white 
+  " autocmd WinEnter,BufRead * highlight StatusLineTerm guifg=black guibg=white
   " autocmd WinLeave * hi StatusLineTermNC ctermbg=244 ctermbg=232 guifg=#808080 guibg=#080808
   " autocmd WinEnter,BufRead * hi StatusLineTermNC ctermbg=244 ctermbg=232 guifg=#808080 guibg=#080808
-  " autocmd WinEnter,BufRead * highlight StatusLine guifg=black guibg=white 
-  " autocmd WinLeave * highlight StatusLine guifg=DarkSlateGray guibg=OliveDrab 
-  " autocmd WinEnter,BufRead * highlight StatusLine guifg=black guibg=white 
+  " autocmd WinEnter,BufRead * highlight StatusLine guifg=black guibg=white
+  " autocmd WinLeave * highlight StatusLine guifg=DarkSlateGray guibg=OliveDrab
+  " autocmd WinEnter,BufRead * highlight StatusLine guifg=black guibg=white
   " autocmd FocusLost * set nocursorline
   " autocmd FocusGained * set cursorline
   " autocmd WinLeave,FocusLost * set nocursorline
@@ -304,21 +338,104 @@ augroup ccsl
 augroup END
 
 function! ZenkakuSpace() "{{{
-    highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
+    highlight ZenkakuSpace cterm=reverse ctermfg=darkgray gui=reverse guifg=DarkMagenta
 endfunction
 if has('syntax')
     augroup ZenkakuSpace
         autocmd!
         autocmd ColorScheme       * call ZenkakuSpace()
-        autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
+        " autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
+        autocmd VimEnter,WinEnter * if &filetype ==# 'ddu-filer' | match none | else | match ZenkakuSpace /　\| $/ | endif
+        autocmd FileType ddu-filer match none
     augroup END
     call ZenkakuSpace()
 endif "全角スペースを可視化する "}}}
 
+augroup update_markdown_syntax
+  autocmd!
+  autocmd FileType markdown syntax match markdownError '\w\@<=\w\@='
+augroup END
+
+"  for jupyter
+function! s:SignAndHighlightLine(hlline)
+  if !exists("b:Vm_sign_number")
+    let b:Vm_sign_number = 1
+  endif
+
+  exe 'sign define SignSymbol linehl=JupyterCellFmt texthl=JupyterCellFmt'
+  exe 'sign place ' . b:Vm_sign_number . ' line=' . a:hlline . ' name=SignSymbol buffer=' . winbufnr(0)
+
+  let vsn              = b:Vm_sign_number
+  let b:Vm_sign_number = b:Vm_sign_number + 1
+
+  highlight JupyterCellFmt term=underline cterm=underline ctermul=Green
+endfun
+
+function! s:HighlightJupyCellFmt()
+  let s:svpos = winsaveview()
+  let l:lines = []
+  execute "g/^# %%/let l:lines = add(l:lines, line('.'))"
+  call winrestview(s:svpos)
+  unlet s:svpos
+  for ln in l:lines
+    call s:SignAndHighlightLine(ln)
+  endfor
+endfun
+
+" let s:colwidth=winwidth(0) - &foldcolumn - (!&number ? 0 : max([&numberwidth, len(line('$'))])) - 1
+let g:jupytext_fmt = 'py:percent'
+let g:jupytext_filetype_map = {'py': 'python'}
+augroup jupyter_syntax
+  autocmd!
+  highlight JupytertxtCellFmt ctermbg=DarkGray ctermfg=Black term=underline cterm=underline ctermul=Green
+  autocmd VimEnter,WinEnter *.ipynb if &filetype == 'py' | match none | else | match JupytertxtCellFmt /^# %%.*/ | endif
+  autocmd VimEnter,WinEnter *.ipynb if &filetype == 'py' | match none | else | call s:HighlightJupyCellFmt() | endif
+augroup END
+
+" カーソルの位置を強調
+hi clear CursorLine
+hi CursorLineNr term=bold  cterm=NONE ctermfg=White ctermbg=235
+set updatetime=20000
+augroup vimrc-auto-cursorline
+  autocmd!
+  autocmd CursorMoved,CursorMovedI * call s:auto_cursorline('CursorMoved')
+  autocmd CursorHold,CursorHoldI * call s:auto_cursorline('CursorHold')
+  autocmd WinEnter * call s:auto_cursorline('WinEnter')
+  autocmd WinLeave * call s:auto_cursorline('WinLeave')
+
+  setlocal cursorline
+  hi clear CursorLine
+
+  let s:cursorline_lock = 0
+  function! s:auto_cursorline(event)
+    if a:event ==# 'WinEnter'
+      setlocal cursorline
+      hi CursorLine term=reverse cterm=underline guibg=Grey90 ctermul=LightBlue
+      let s:cursorline_lock = 2
+    elseif a:event ==# 'WinLeave'
+      setlocal nocursorline
+      hi clear CursorLine
+    elseif a:event ==# 'CursorMoved'
+      if s:cursorline_lock
+        if 1 < s:cursorline_lock
+          let s:cursorline_lock = 1
+        else
+          " setlocal nocursorline
+          hi clear CursorLine
+          let s:cursorline_lock = 0
+        endif
+      endif
+    elseif a:event ==# 'CursorHold'
+      " setlocal cursorline
+      hi CursorLine term=reverse cterm=underline guibg=Grey90 ctermul=LightBlue
+      let s:cursorline_lock = 1
+    endif
+  endfunction
+augroup END
+
 augroup vimrcEx "{{{
-  au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
-  \ exe "windo normal G" | exe "windo normal g`\"" | endif
-augroup END " 前回の編集場所のカーソル位置から開く 
+  au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") | exe "windo normal G" | exe "windo normal g`\"" | endif
+augroup END " 前回の編集場所のカーソル位置から開く
 "}}}
 
 " Shougo's settings"{{{
@@ -451,6 +568,7 @@ augroup END " 前回の編集場所のカーソル位置から開く
 " set conceallevel=2 concealcursor=niv
 "
 " set colorcolumn=79
+call matchadd('ColorColumn', '\%81v', 100)
 "}}}
 "}}}
 
@@ -468,6 +586,56 @@ if has('terminal')
 endif
 
 " }}}
+
+"---------------------------------------------------------------------------
+" Filer"{{{
+
+" call ddu#custom#patch_global({
+"     \   'ui': 'filer',
+"     \   'sources': [{'name': 'file', 'params': {}}],
+"     \   'sourceOptions': {
+"     \     '_': {
+"     \       'columns': ['filename'],
+"     \     },
+"     \   },
+"     \   'kindOptions': {
+"     \     'file': {
+"     \       'defaultAction': 'open',
+"     \     },
+"     \   }
+"     \ })
+"
+" call ddu#custom#patch_global({
+"     \  'uiParams': {
+"     \    'ff' : {
+"     \      'startFilter' : v:true,
+"     \      }
+"     \    },
+"     \  })
+"
+" autocmd FileType ddu-filer call s:ddu_my_settings()
+" function! s:ddu_my_settings() abort
+"   nnoremap <buffer><silent> <CR>
+"         \ <Cmd>call ddu#ui#filer#do_action('itemAction')<CR>
+"   nnoremap <buffer><silent> <Space>
+"         \ <Cmd>call ddu#ui#filer#do_action('toggleSelectItem')<CR>
+"   nnoremap <buffer> o
+"         \ <Cmd>call ddu#ui#filer#do_action('expandItem',
+"         \ {'mode': 'toggle'})<CR>
+"   nnoremap <buffer><silent> q
+"         \ <Cmd>call ddu#ui#filer#do_action('quit')<CR>
+" endfunction
+
+let g:netrw_liststyle = 3
+" let g:netrw_winsize = 20
+let g:netrw_preview = 1
+let g:netrw_altv = 1
+let g:netrw_alto = 1
+let g:netrw_bufsettings = 'noma nomod nu nowrap ro nobl incsearch' " default: 'noma nomod nonu nowrap ro nobl'
+let b:netrw_col = 1
+" nmap <buffer> <silent> <nowait> <s-cr>  <Plug>NetrwTreeSqueeze
+
+"}}}
 
 "---------------------------------------------------------------------------
 " MyVimScripts"{{{
@@ -492,6 +660,10 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/LineMove.vim'
 if has('terminal')
   execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/saveLastSession.vim'
 endif
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/RunClangFormat.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/JupyRunAllCells.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/htmlpreview.vim'
+" execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/CopilotLogSaver.vim'
 " source ~/.vim/script/RosTopicList.vim
 " source ~/.vim/script/RosCatkinMake.vim
 " source ~/.vim/script/CatkinMake_pkg.vim
@@ -503,4 +675,4 @@ endif
 " source ~/.vim/script/RosBuild.vim
 " "source ~/.vim/script/smooth_scroll.vim
 "}}}
- 
+
