@@ -16,7 +16,8 @@
 " if (!has('nvim') || $DISPLAY != '') && has('clipboard')
 "   xnoremap <silent> y "*y:let [@+,@"]=[@*,@*]<CR>
 " endif
-vnoremap <silent> * "zy:let @/ = @z<CR>:set hlsearch<CR>
+" vnoremap <silent> * "zy:let @/ = @z<CR>:set hlsearch<CR>
+vnoremap <silent> * <ESC>:let @t=@"<CR>gv"zy:let @/ = @z<CR>:let @"=@t<CR>:set hlsearch<CR>
 " vnoremap ccc <ESC>a*/<ESC>gvo<ESC>i/*<ESC>
 vnoremap <silent> cy   c<C-r>0<ESC>:let@/=@1<CR>:noh<CR>
 
@@ -69,8 +70,15 @@ inoremap <C-w> <C-\><C-o>"ydb
 inoremap <C-y> <C-r>y
 " inoremap <C-l> <ESC><Right>s
 
+"copilot keymaps
+" inoremap <C-]> <Plug>(copilot-suggest)
+inoremap <C-k> <Plug>(copilot-next)
+inoremap <C-l> <Plug>(copilot-previous)
+inoremap <C-i> <Plug>(copilot-accept-line)
+
+
 " inoremap <A-j> lll
-" inoremap @p <Right><ESC>"0pi 
+" inoremap @p <Right><ESC>"0pi
 " inoremap <C-j> <ESC>:s/^ *//<CR>kgJ:noh<CR>i
 
 "}}}
@@ -102,7 +110,7 @@ cnoremap <C-y>          <C-r>*
 " cnoremap W w !sudo tee % > /dev/null
 " cnoremap vdiff vertical<Space>diffsplit<Space>
 command! W w !sudo tee % > /dev/null
-command! -complete=file Vdiff vertical<Space>diffsplit<Space>
+command! -nargs=1 -complete=file Vdiff vertical<Space>diffsplit<Space>
 " au FileType plantuml command! OpenUml :!google-chrome %
 "}}}
 
@@ -123,6 +131,11 @@ endif
 " Netrw keymappings"{{{
 " autocmd filetype netrw nmap <buffer> x :call NetrwCollapse()<CR>
 " }}}
+
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
 
 " movement "{{{
 " noremap j gj
@@ -151,7 +164,7 @@ noremap <silent> gh :set relativenumber!<CR>
 
 " yank and paste"{{{
 
-noremap 0p "0p
+vnoremap 0p "0p
 noremap <Space>y "ay
 noremap <Space>p "ap
 noremap Y y$
@@ -175,10 +188,10 @@ nnoremap  [Space]   <Nop>
 
 nnoremap <Space>m :make<Enter>
 " nnoremap [Space]m :make<Enter>
-nnoremap <Space>p :make\|!xdg-open %:r.png<Enter><Enter>
+" nnoremap <Space>p :make\|!xdg-open %:r.png<Enter><Enter>
 
 " not move only highligt
-nnoremap <silent> * :let @/="\\<"<CR>"zyiw:let @/.=@z<CR>:let @/.="\\>"<CR>:set hlsearch<CR>
+nnoremap <silent> * :let @t=@"<CR>:let @/="\\<"<CR>"zyiw:let @/.=@z<CR>:let @/.="\\>"<CR>:let @"=@t<CR>:set hlsearch<CR>
 
 nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
