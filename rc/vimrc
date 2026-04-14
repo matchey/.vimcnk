@@ -69,6 +69,8 @@ call s:source_rc('mappings.rc.vim')
 
 call s:source_rc('options.rc.vim')
 
+call s:source_rc('commit_msg.rc.vim')
+
 " if has('nvim')
 "   call s:source_rc('neovim.rc.vim')
 " endif
