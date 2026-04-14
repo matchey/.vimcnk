@@ -13,12 +13,12 @@ function! CppMake()
   let @r=@%
   if isdirectory('out')
 	  " let s:outpath="\./out/"
-	  execute "normal :!g++\<Space>-std=c++11\<Space>-o\<Space>\./out/\<C-r>r\<BS>\<BS>\<BS>\<BS>\<Space>\<C-r>r\<CR>"
+	  execute "normal :!g++\<Space>-std=c++23\<Space>-o\<Space>\./out/\<C-r>r\<BS>\<BS>\<BS>\<BS>\<Space>\<C-r>r\<CR>"
   else
 	  " let s:outpath="\./"
-	  execute "normal :!g++\<Space>-std=c++11\<Space>-o\<Space>\./\<C-r>r\<BS>\<BS>\<BS>\<BS>\<Space>\<C-r>r\<CR>"
+	  execute "normal :!g++\<Space>-std=c++23\<Space>-o\<Space>\./\<C-r>r\<BS>\<BS>\<BS>\<BS>\<Space>\<C-r>r\<CR>"
   endif
-  " execute "normal :!g++\<Space>-std=c++11\<Space>-o\<Space>\./out/\<C-r>r\<BS>\<BS>\<BS>\<BS>\<Space>\<C-r>r\<CR>"
+  " execute "normal :!g++\<Space>-std=c++23\<Space>-o\<Space>\./out/\<C-r>r\<BS>\<BS>\<BS>\<BS>\<Space>\<C-r>r\<CR>"
 endfunction
 
 " Command enable
