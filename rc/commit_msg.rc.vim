@@ -178,9 +178,10 @@ function s:generate_commit_msg(git_root) abort
   let tmpfile = tempname()
   call writefile(split(prompt, '\n'), tmpfile)
 
-  " Add indicator as a comment line after existing content
-  call append(line('$'), '# [CommitMsg] Generating commit message...')
-  let s:commit_msg_indicator_line = line('$')
+  " Show indicator in command line (deferred to avoid "Press ENTER" prompt)
+  call timer_start(0, {-> execute(
+        \ "redraw | echohl MoreMsg | echon '[CommitMsg] Generating... (:CancelCommitMsg to cancel)' | echohl None",
+        \ '')})
 
   let s:commit_msg_job = job_start(
         \ ['sh', '-c', 'copilot -p "$(cat ' . shellescape(tmpfile) . ')" 2>/dev/null; rm -f ' . shellescape(tmpfile)],
@@ -201,34 +202,54 @@ function s:on_commit_msg_close(ch) abort
   let s:commit_msg_job = v:null
   let msg = trim(s:commit_msg_output)
   if empty(msg)
-    call s:remove_commit_msg_indicator()
-    echom '[CommitMsg] Failed to generate commit message'
+    redraw
+    echohl ErrorMsg
+    echo '[CommitMsg] Failed to generate commit message'
+    echohl None
     return
   endif
 
   " Post-process: sanitize the generated message
   let msg = s:sanitize_commit_msg(msg)
 
-  call s:remove_commit_msg_indicator()
   let lines = split(msg, '\n')
   if empty(lines)
-    echom '[CommitMsg] Generated message was empty after sanitization'
+    redraw
+    echohl ErrorMsg
+    echo '[CommitMsg] Generated message was empty after sanitization'
+    echohl None
     return
   endif
+  " Add trailing blank line after body
+  call add(lines, '')
+
   if bufexists(s:commit_msg_bufnr)
     let cur_buf = bufnr('%')
-    execute 'buffer ' . s:commit_msg_bufnr
+    let cur_win = winnr()
+    let target_win = bufwinnr(s:commit_msg_bufnr)
+    if target_win != -1
+      execute target_win . 'wincmd w'
+    else
+      execute 'buffer ' . s:commit_msg_bufnr
+    endif
+    let save_view = winsaveview()
     if empty(trim(getline(1)))
       call setline(1, lines[0])
       if len(lines) > 1
         call append(1, lines[1:])
       endif
     endif
-    if cur_buf != s:commit_msg_bufnr
+    call winrestview(save_view)
+    if target_win != -1
+      execute cur_win . 'wincmd w'
+    elseif cur_buf != s:commit_msg_bufnr
       execute 'buffer ' . cur_buf
     endif
+    redraw
   endif
-  echom '[CommitMsg] Commit message generated'
+  echohl MoreMsg
+  echo '[CommitMsg] Commit message generated'
+  echohl None
 endfunction
 
 function s:sanitize_commit_msg(msg) abort
@@ -269,33 +290,48 @@ function s:sanitize_commit_msg(msg) abort
     call remove(lines, -1)
   endwhile
 
+  " Enforce 72-char line width (wrap body lines, truncate subject)
+  let result = []
+  for i in range(len(lines))
+    let l = lines[i]
+    if i == 0
+      " Subject line: hard truncate at 72 chars
+      if len(l) > 72
+        let l = l[:71]
+      endif
+      call add(result, l)
+    elseif empty(trim(l))
+      call add(result, '')
+    else
+      " Body lines: word-wrap at 72 chars
+      while len(l) > 72
+        let break_at = strridx(l[:71], ' ')
+        if break_at <= 0
+          let break_at = 72
+        endif
+        call add(result, l[:break_at - 1])
+        let l = trim(l[break_at:])
+      endwhile
+      if !empty(l)
+        call add(result, l)
+      endif
+    endif
+  endfor
+  let lines = result
+
   return join(lines, "\n")
 endfunction
 
-function s:remove_commit_msg_indicator() abort
-  if !bufexists(s:commit_msg_bufnr)
-    return
-  endif
-  let cur_buf = bufnr('%')
-  execute 'buffer ' . s:commit_msg_bufnr
-  for lnum in range(line('$'), 1, -1)
-    if getline(lnum) =~# '^\#\s*\[CommitMsg\] Generating'
-      execute lnum . 'delete _'
-      break
-    endif
-  endfor
-  if cur_buf != s:commit_msg_bufnr
-    execute 'buffer ' . cur_buf
-  endif
-endfunction
 
 function s:cancel_commit_msg_job() abort
   if s:commit_msg_job isnot v:null
         \ && job_status(s:commit_msg_job) ==# 'run'
     call job_stop(s:commit_msg_job)
     let s:commit_msg_job = v:null
-    call s:remove_commit_msg_indicator()
-    echom '[CommitMsg] Generation cancelled'
+    redraw
+    echohl WarningMsg
+    echo '[CommitMsg] Generation cancelled'
+    echohl None
   endif
 endfunction
 
