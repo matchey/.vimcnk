@@ -11,13 +11,35 @@ repo = 'Shougo/dein.vim'
 # '''
 
 # [[plugins]]
+# repo = 'gergap/vim-ollama'
+[[plugins]]
+repo = 'github/copilot.vim'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+# LSP for formmatting
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+rev = 'release'
+build = 'yarn install --frozen-lockfile'
+# build = 'npm ci'
+disable = true
+
+# [[plugins]]
 # repo = 'taketwo/vim-ros'
+
+[[plugins]]
+repo = 'mhinz/vim-startify'
 
 [[plugins]]
 repo = 'LeafCage/foldCC'
 
 [[plugins]]
 repo = 'tomtom/tcomment_vim'
+
+# [[plugins]]
+# repo = 'elm-tooling/elm-vim'
 
 [[plugins]]
 repo = 'aklt/plantuml-syntax'
@@ -26,16 +48,35 @@ repo = 'aklt/plantuml-syntax'
 # repo = 'plasticboy/vim-markdown'
 
 [[plugins]]
-repo = 'iamcco/markdown-preview.vim'
+repo = 'mattn/mkdpreview-vim'
+
+[[plugins]]
+repo = 'mattn/webapi-vim'
+
+# [[plugins]]
+# repo = 'iamcco/markdown-preview.vim'
+
+[[plugins]]
+repo = 'goerz/jupytext.vim'
+
+# [[plugins]]
+# repo = 'jupyter-vim/jupyter-vim'
 #
 # [[plugins]]
 # repo = 'kannokanno/previm'
 
 [[plugins]]
-repo = 'tyru/open-browser.vim'
+repo = 'mattn/vim-sonictemplate'
+
+# [[plugins]]
+# repo = 'tyru/open-browser.vim'
 
 [[plugins]]
 repo = 'osyo-manga/vim-anzu'
+
+# easy motion for vert f
+[[plugins]]
+repo = 'justinmk/vim-sneak'
 
 # [[plugins]]
 # repo = 'kyoh86/vim-editerm'

@@ -7,6 +7,7 @@ let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 " if &compatible
 "   set nocompatible               " Be iMproved
 " endif
+set nocompatible
 
 " Required:
 execute 'set runtimepath+=' . s:dein_repo_dir
@@ -40,6 +41,9 @@ if dein#load_state(s:dein_dir)
   endif
   call dein#disable('neobundle.vim')
   call dein#disable('neopairs.vim')
+  if !executable('node')
+    call dein#disable('coc.nvim')
+  endif
 
   " Required:
   call dein#end()
