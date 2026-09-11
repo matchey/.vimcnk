@@ -179,7 +179,9 @@ let g:copilot_filetypes = {
       \ }
 " let g:copilot_settings = #{selectedCompletionModel: 'gpt-5.2'}
 " let g:copilot_settings = #{selectedCompletionModel: 'gemini-2.5-pro'}
-let g:copilot_settings = #{selectedCompletionModel: 'claude-opus-4.5'}
+" let g:copilot_settings = #{selectedCompletionModel: 'claude-opus-4.8'}
+let g:copilot_settings = #{selectedCompletionModel: 'gpt-6-astra'}
+" let g:copilot_settings = #{selectedCompletionModel: 'claude-opus-5'}
 
 
 " Shougo's settings"{{{
