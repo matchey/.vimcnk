@@ -109,6 +109,7 @@ cnoremap <C-y>          <C-r>*
 " cnoremap <C-l> <Right>
 " cnoremap W w !sudo tee % > /dev/null
 " cnoremap vdiff vertical<Space>diffsplit<Space>
+nnoremap d. :.diffget<CR>
 command! W w !sudo tee % > /dev/null
 command! -nargs=1 -complete=file Vdiff vertical<Space>diffsplit<Space>
 " au FileType plantuml command! OpenUml :!google-chrome %
@@ -125,6 +126,7 @@ if has('terminal')
   tnoremap <C-w><C-u> <C-w><S-n><C-u>
   tnoremap <C-w>/ <C-w><S-n>/
   " tnoremap i <C-w>=i
+  " set temwinkey=<C-l>
 endif
 " }}}
 
@@ -236,6 +238,9 @@ nnoremap <Space><Space> i<Space><ESC><Right>
 
 " put a new line
 nnoremap [Space]<CR> o<ESC>
+
+" open netrw
+nnoremap <silent> [Space]d :Lexplore<CR>:vertical resize 30<CR>
 
 "count number of characters
 " vnoremap co :s/./&/gn <== g<C-g>
