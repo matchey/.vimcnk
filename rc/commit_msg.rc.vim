@@ -1,5 +1,5 @@
 "---------------------------------------------------------------------------
-" Commit message helper: diff appending + auto-generation via Copilot CLI
+" Commit message helper: diff appending + explicit completion via copilot.vim
 "---------------------------------------------------------------------------
 
 " Configuration
@@ -12,8 +12,10 @@ let g:commit_diff_max_lines_per_file =
 let g:commit_message_skill_path =
       \ get(g:, 'commit_message_skill_path',
       \   expand('~/.copilot/skills/commit-message/SKILL.md'))
-let g:commit_msg_auto_generate =
-      \ get(g:, 'commit_msg_auto_generate', 1)
+let g:commit_msg_auto_complete =
+      \ get(g:, 'commit_msg_auto_complete', 1)
+let g:commit_msg_completion_timeout =
+      \ get(g:, 'commit_msg_completion_timeout', 30000)
 
 let s:diff_exclude_patterns = [
       \ '*.lock',
@@ -26,12 +28,20 @@ let s:diff_exclude_patterns = [
       \ 'go.sum',
       \ ]
 
-let s:commit_msg_job = v:null
+if !exists('s:commit_msg_requests')
+  let s:commit_msg_requests = {}
+endif
 
 function s:append_diff() abort
   let git_dir = FugitiveGitDir()
   let git_root = fnamemodify(git_dir, ':h')
-  let lines = []
+  let lines = [
+        \ '# Write a concise English commit message for the staged changes below.',
+        \ '# Subject: one sentence, 72 characters or fewer.',
+        \ '# Optional body: explain WHY in 1-3 sentences after a blank line.',
+        \ '# Output only the message, without markdown fences or trailers.',
+        \ '#',
+        \ ]
 
   " --- Commit Message Guidelines (from SKILL.md) ---
   let skill_path = expand(g:commit_message_skill_path)
@@ -125,147 +135,211 @@ function s:append_diff() abort
 
   call append(line('$'), lines)
 
-  " Auto-generate commit message
-  if g:commit_msg_auto_generate
-    call s:generate_commit_msg(git_root)
+  if g:commit_msg_auto_complete
+    call s:generate_commit_msg()
   endif
 endfunction
 
-function s:generate_commit_msg(git_root) abort
-  call s:cancel_commit_msg_job()
-
-  " Build the prompt with SKILL.md rules + strict instructions
-  let prompt_parts = []
-  call add(prompt_parts, 'Generate a git commit message for the staged changes below.')
-  call add(prompt_parts, '')
-  call add(prompt_parts, '=== STRICT OUTPUT RULES ===')
-  call add(prompt_parts, '- Output ONLY the raw commit message text. Nothing else.')
-  call add(prompt_parts, '- Do NOT wrap in markdown code blocks or quotes.')
-  call add(prompt_parts, '- Do NOT add Co-authored-by, Signed-off-by, or any trailers.')
-  call add(prompt_parts, '- Do NOT add bullet-point lists of changed files or functions.')
-  call add(prompt_parts, '- Write in English.')
-  call add(prompt_parts, '- Subject: single short sentence, 72 chars or fewer.')
-  call add(prompt_parts, '- Body (optional): 1-3 sentences max. Write WHY, not WHAT.')
-  call add(prompt_parts, '- Separate subject and body with a blank line.')
-  call add(prompt_parts, '')
-
-  let skill_path = expand(g:commit_message_skill_path)
-  if filereadable(skill_path)
-    call add(prompt_parts, '=== DETAILED COMMIT MESSAGE GUIDELINES ===')
-    call add(prompt_parts, join(readfile(skill_path), "\n"))
-    call add(prompt_parts, '')
-  endif
-
-  call add(prompt_parts, '=== DIFF ===')
-
-  let diff_for_prompt = system('git -C ' . shellescape(a:git_root)
-        \ . ' diff --cached --stat')
-  let diff_for_prompt .= "\n"
-  let diff_for_prompt .= system('git -C ' . shellescape(a:git_root)
-        \ . ' diff --cached')
-  let diff_lines = split(diff_for_prompt, '\n')
-  if len(diff_lines) > 300
-    let diff_for_prompt = join(diff_lines[:299], "\n")
-          \ . "\n... (diff truncated)"
-  endif
-  call add(prompt_parts, diff_for_prompt)
-
-  call add(prompt_parts, '')
-  call add(prompt_parts, 'Remember: output ONLY the commit message. No trailers. No markdown fences. Be concise.')
-
-  let prompt = join(prompt_parts, "\n")
-
-  let tmpfile = tempname()
-  call writefile(split(prompt, '\n'), tmpfile)
-
-  " Show indicator in command line (deferred to avoid "Press ENTER" prompt)
-  call timer_start(0, {-> execute(
-        \ "redraw | echohl MoreMsg | echon '[CommitMsg] Generating... (:CancelCommitMsg to cancel)' | echohl None",
-        \ '')})
-
-  let s:commit_msg_job = job_start(
-        \ ['sh', '-c', 'copilot -p "$(cat ' . shellescape(tmpfile) . ')" 2>/dev/null; rm -f ' . shellescape(tmpfile)],
-        \ #{
-        \   out_cb: function('s:on_commit_msg_stdout'),
-        \   close_cb: function('s:on_commit_msg_close'),
-        \   out_mode: 'raw',
-        \ })
-  let s:commit_msg_output = ''
-  let s:commit_msg_bufnr = bufnr('%')
-endfunction
-
-function s:on_commit_msg_stdout(ch, msg) abort
-  let s:commit_msg_output .= a:msg
-endfunction
-
-function s:on_commit_msg_close(ch) abort
-  let s:commit_msg_job = v:null
-  let msg = trim(s:commit_msg_output)
-  if empty(msg)
-    redraw
-    echohl ErrorMsg
-    echo '[CommitMsg] Failed to generate commit message'
-    echohl None
-    return
-  endif
-
-  " Post-process: sanitize the generated message
-  let msg = s:sanitize_commit_msg(msg)
-
-  let lines = split(msg, '\n')
-  if empty(lines)
-    redraw
-    echohl ErrorMsg
-    echo '[CommitMsg] Generated message was empty after sanitization'
-    echohl None
-    return
-  endif
-  " Add trailing blank line after body
-  call add(lines, '')
-
-  if bufexists(s:commit_msg_bufnr)
-    let cur_buf = bufnr('%')
-    let cur_win = winnr()
-    let target_win = bufwinnr(s:commit_msg_bufnr)
-    if target_win != -1
-      execute target_win . 'wincmd w'
-    else
-      execute 'buffer ' . s:commit_msg_bufnr
-    endif
-    let save_view = winsaveview()
-    if empty(trim(getline(1)))
-      call setline(1, lines[0])
-      if len(lines) > 1
-        call append(1, lines[1:])
-      endif
-    endif
-    call winrestview(save_view)
-    if target_win != -1
-      execute cur_win . 'wincmd w'
-    elseif cur_buf != s:commit_msg_bufnr
-      execute 'buffer ' . cur_buf
-    endif
-    redraw
-  endif
-  echohl MoreMsg
-  echo '[CommitMsg] Commit message generated'
+function s:commit_msg_notice(message, highlight) abort
+  redraw
+  execute 'echohl ' . a:highlight
+  echomsg '[CommitMsg] ' . a:message
   echohl None
 endfunction
 
+function s:commit_msg_pending(state) abort
+  return get(s:commit_msg_requests, a:state.bufnr, {}) is a:state
+endfunction
+
+function s:finish_commit_msg(state) abort
+  if !s:commit_msg_pending(a:state)
+    return 0
+  endif
+  call remove(s:commit_msg_requests, a:state.bufnr)
+  call timer_stop(a:state.timer)
+  if !empty(a:state.request)
+    call a:state.request.Cancel()
+  endif
+  if a:state.prompt_bufnr > 0 && bufexists(a:state.prompt_bufnr)
+    execute 'silent bwipeout! ' . a:state.prompt_bufnr
+  endif
+  return 1
+endfunction
+
+function s:commit_msg_unchanged(state) abort
+  return bufloaded(a:state.bufnr)
+        \ && getbufvar(a:state.bufnr, 'changedtick') == a:state.changedtick
+        \ && getbufvar(a:state.bufnr, '&modifiable')
+        \ && !getbufvar(a:state.bufnr, '&readonly')
+endfunction
+
+function s:generate_commit_msg() abort
+  call s:cancel_commit_msg(bufnr(''))
+  let state = {
+        \ 'bufnr': bufnr(''),
+        \ 'prompt_bufnr': -1,
+        \ 'request': {},
+        \ 'timer': -1,
+        \ }
+  let s:commit_msg_requests[state.bufnr] = state
+  " Defer until startup autocommands and filetype setup have finished.
+  let state.timer = timer_start(0, function('s:start_commit_msg', [state]))
+endfunction
+
+function s:prepare_commit_msg_prompt(state) abort
+  let context = map(getbufline(a:state.bufnr, 2, '$'),
+        \ {_, line -> substitute(line, '^# \?', '', '')})
+  let lines = context + ['', 'Commit message (plain text, without fences or trailers):', '']
+  " A prose prompt avoids copying the original gitcommit buffer as a similar file.
+  let prompt_bufnr = bufadd(tempname() . '.md')
+  let a:state.prompt_bufnr = prompt_bufnr
+  if prompt_bufnr <= 0
+    call s:finish_commit_msg(a:state)
+    call s:commit_msg_notice('Failed to create the completion context buffer.', 'ErrorMsg')
+    return 0
+  endif
+  call setbufvar(prompt_bufnr, '&buftype', 'nofile')
+  call setbufvar(prompt_bufnr, '&bufhidden', 'hide')
+  call setbufvar(prompt_bufnr, '&swapfile', 0)
+  call setbufvar(prompt_bufnr, '&undofile', 0)
+  noautocmd call bufload(prompt_bufnr)
+  noautocmd call setbufvar(prompt_bufnr, '&filetype', 'markdown')
+  let workspace = getbufvar(a:state.bufnr, 'workspace_folder', '')
+  if !empty(workspace)
+    call setbufvar(prompt_bufnr, 'workspace_folder', workspace)
+  endif
+  if setbufline(prompt_bufnr, 1, lines) != 0
+    call s:finish_commit_msg(a:state)
+    call s:commit_msg_notice('Failed to populate the completion context buffer.', 'ErrorMsg')
+    return 0
+  endif
+  let a:state.position = {'line': len(lines) - 1, 'character': 0}
+  return 1
+endfunction
+
+function s:start_commit_msg(state, timer) abort
+  if !s:commit_msg_pending(a:state)
+    return
+  endif
+  if !bufloaded(a:state.bufnr) || bufnr('') != a:state.bufnr
+        \ || !&modifiable || &readonly
+    call s:cancel_commit_msg(a:state.bufnr)
+    return
+  endif
+  " Never replace an existing message, including a body below an empty subject.
+  if &filetype !=# 'gitcommit' || getline(1) !=# ''
+        \ || !empty(filter(getline(1, '$'), 'v:val !~# ''^\s*\%($\|#\)'''))
+    call s:finish_commit_msg(a:state)
+    call s:commit_msg_notice('Skipped: an empty gitcommit message is required.', 'WarningMsg')
+    return
+  endif
+  try
+    if !copilot#Enabled()
+      call s:finish_commit_msg(a:state)
+      call s:commit_msg_notice('Copilot is disabled for this buffer.', 'WarningMsg')
+      return
+    endif
+    if !s:prepare_commit_msg_prompt(a:state)
+      return
+    endif
+    let params = {
+          \ 'textDocument': {'uri': a:state.prompt_bufnr},
+          \ 'position': a:state.position,
+          \ }
+    " Inline suggestions can be empty for valid commit prompts; request explicit
+    " candidates as :Copilot panel does, without opening a panel window.
+    " copilot.vim queues the request until its language server is initialized.
+    let a:state.changedtick = b:changedtick
+    let a:state.request = copilot#Request('textDocument/copilotPanelCompletion', params,
+          \ function('s:on_commit_msg_result', [a:state]),
+          \ function('s:on_commit_msg_error', [a:state]))
+  catch /\<E117:/
+    call s:finish_commit_msg(a:state)
+    call s:commit_msg_notice('copilot.vim completion API is unavailable: ' . v:exception, 'ErrorMsg')
+    return
+  endtry
+  let a:state.timer = timer_start(g:commit_msg_completion_timeout,
+        \ function('s:on_commit_msg_timeout', [a:state]))
+  call s:commit_msg_notice('Completing... (:CancelCommitMsg to cancel)', 'MoreMsg')
+endfunction
+
+function s:on_commit_msg_error(state, error) abort
+  if s:finish_commit_msg(a:state)
+    call s:commit_msg_notice('Completion failed: ' . get(a:error, 'message', string(a:error)), 'ErrorMsg')
+  endif
+endfunction
+
+function s:on_commit_msg_timeout(state, timer) abort
+  if s:finish_commit_msg(a:state)
+    call s:commit_msg_notice('Completion timed out; no CLI fallback was used.', 'WarningMsg')
+  endif
+endfunction
+
+function s:on_commit_msg_result(state, result) abort
+  if !s:finish_commit_msg(a:state)
+    return
+  endif
+  if !s:commit_msg_unchanged(a:state)
+    call s:commit_msg_notice('Completion discarded: buffer changed or closed.', 'WarningMsg')
+    return
+  endif
+  let items = type(a:result) == v:t_list ? a:result
+        \ : (type(a:result) == v:t_dict ? get(a:result, 'items', []) : [])
+  if empty(items)
+    call s:commit_msg_notice('No completion candidate was returned.', 'WarningMsg')
+    return
+  endif
+  let item = items[0]
+  let origin = a:state.position
+  let range = get(item, 'range', {'start': origin, 'end': origin})
+  if range.start !=# origin || range.end !=# origin
+    call s:commit_msg_notice('Unsupported completion range; buffer left unchanged.', 'ErrorMsg')
+    return
+  endif
+  if type(get(item, 'insertText', v:null)) != v:t_string
+    call s:commit_msg_notice('Unsupported completion text; buffer left unchanged.', 'ErrorMsg')
+    return
+  endif
+  let lines = split(s:sanitize_commit_msg(item.insertText), '\n')
+  if empty(lines)
+    call s:commit_msg_notice('Generated message was empty after sanitization.', 'WarningMsg')
+    return
+  endif
+  " Keep the original blank first line as the separator, without switching buffers.
+  let view = bufnr('') == a:state.bufnr ? winsaveview() : {}
+  if appendbufline(a:state.bufnr, 0, lines) != 0
+    call s:commit_msg_notice('Failed to insert the completion.', 'ErrorMsg')
+    return
+  endif
+  if !empty(view)
+    " Keep a cursor in the message slot there; preserve comment positions below it.
+    if view.lnum > 1
+      let view.lnum += len(lines)
+    endif
+    if view.topline > 1
+      let view.topline += len(lines)
+    endif
+    call winrestview(view)
+  endif
+  if has_key(item, 'command')
+    call copilot#Request('workspace/executeCommand', item.command)
+  endif
+  call s:commit_msg_notice('Commit message completed.', 'MoreMsg')
+endfunction
+
 function s:sanitize_commit_msg(msg) abort
-  let lines = split(a:msg, '\n')
+  let lines = split(substitute(a:msg, '\r\n\=', '\n', 'g'), '\n')
   let result = []
 
-  " Strip markdown code fences
-  let in_fence = 0
+  " Do not insert Git's comment template if the model continues into it.
   for l in lines
+    if l =~# '^\s*#'
+      break
+    endif
     if l =~# '^```'
-      let in_fence = !in_fence
       continue
     endif
-    if !in_fence
-      call add(result, l)
-    endif
+    call add(result, l)
   endfor
   let lines = result
 
@@ -323,20 +397,18 @@ function s:sanitize_commit_msg(msg) abort
 endfunction
 
 
-function s:cancel_commit_msg_job() abort
-  if s:commit_msg_job isnot v:null
-        \ && job_status(s:commit_msg_job) ==# 'run'
-    call job_stop(s:commit_msg_job)
-    let s:commit_msg_job = v:null
-    redraw
-    echohl WarningMsg
-    echo '[CommitMsg] Generation cancelled'
-    echohl None
+function s:cancel_commit_msg(bufnr) abort
+  if has_key(s:commit_msg_requests, a:bufnr)
+    call s:finish_commit_msg(s:commit_msg_requests[a:bufnr])
+    call s:commit_msg_notice('Completion cancelled.', 'WarningMsg')
   endif
 endfunction
 
-command! GenerateCommitMsg call s:generate_commit_msg(
-      \ fnamemodify(FugitiveGitDir(), ':h'))
-command! CancelCommitMsg call s:cancel_commit_msg_job()
+command! GenerateCommitMsg call s:generate_commit_msg()
+command! CancelCommitMsg call s:cancel_commit_msg(bufnr(''))
 
-autocmd BufReadPost COMMIT_EDITMSG call s:append_diff()
+augroup CommitMessage
+  autocmd!
+  autocmd BufReadPost COMMIT_EDITMSG call s:append_diff()
+  autocmd BufUnload * call s:cancel_commit_msg(str2nr(expand('<abuf>')))
+augroup END
