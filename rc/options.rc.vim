@@ -646,6 +646,7 @@ let b:netrw_col = 1
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/RosMake.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/MakeInCpp.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/clear_undo.vim'
+execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/trim_trailing_spaces.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/vnewTab.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/histignore.vim'
 execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/SetRelativeNumber.vim'
@@ -677,4 +678,3 @@ execute 'source' fnamemodify(expand('<sfile>'), ':h:h').'/scripts/htmlpreview.vi
 " source ~/.vim/script/RosBuild.vim
 " "source ~/.vim/script/smooth_scroll.vim
 "}}}
-
